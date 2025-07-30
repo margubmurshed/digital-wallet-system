@@ -5,6 +5,7 @@ import cors from "cors";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import { router } from "./app/routes";
+import "./app/config/passport";
 
 const app = express();
 

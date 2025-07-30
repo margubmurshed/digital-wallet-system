@@ -1,12 +1,12 @@
 import { model, Schema } from "mongoose";
-import { IUser, UserRole, UserStatus } from "./user.interface";
+import { IUserDocument, UserRole, UserStatus } from "./user.interface";
 import bcryptjs from "bcryptjs";
 import { envVariables } from "../../config/env";
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUserDocument>({
     name: {type:String, required: true},
     phone: {type: String, required:true, unique: true},
-    email: {type: String, unique: true},
+    email: {type: String, sparse: true},
     password: {type: String, required: true},
     role: {type:String, enum: Object.values(UserRole), required: true},
     status: {type:String, enum: Object.values(UserStatus), default: UserStatus.ACTIVE},
@@ -38,4 +38,4 @@ userSchema.methods.isPasswordMatched = async function (password: string) {
     return await bcryptjs.compare(password, this.password)
 }
 
-export const User = model<IUser>('User',userSchema);
+export const User = model<IUserDocument>('User',userSchema);

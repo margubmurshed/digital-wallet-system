@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import {Server} from "http";
+import { Server } from "http";
 import mongoose from "mongoose";
 import { envVariables } from "./app/config/env";
 import app from "./app";
+import seedSuperAdmin from "./app/utils/seedSuperAdmin";
 
 let server: Server;
 
@@ -12,14 +13,17 @@ const startServer = async () => {
         console.log("Connected to database!")
 
         server = app.listen(envVariables.PORT, () => {
-            console.log("Server is listening to port 5000");
+            console.log(`Server is listening to port ${envVariables.PORT}`);
         })
     } catch (error) {
         console.log(error)
     }
 }
 
-startServer();
+(async () => {
+    await startServer();
+    await seedSuperAdmin()
+})()
 
 const closeServer = () => {
     return new Promise<void>((resolve, reject) => {

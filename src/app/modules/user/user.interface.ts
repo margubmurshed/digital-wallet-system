@@ -11,6 +11,7 @@ export enum UserStatus {
 }
 
 export interface IUser {
+    _id: string;
     name: string;
     phone: string;
     email?: string;
@@ -19,4 +20,8 @@ export interface IUser {
     status: UserStatus,
     commissionRate: number;
     isApproved: boolean
+}
+
+export interface IUserDocument extends IUser, Document {
+  isPasswordMatched(password: string): Promise<boolean>;
 }
