@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthRouter } from "../modules/auth/auth.route";
 import { UserRouter } from "../modules/user/user.route";
+import { WalletRouter } from "../modules/wallet/wallet.route";
 
 export const router = Router();
 
@@ -11,7 +12,8 @@ interface IModuleRoute {
 
 const moduleRoutes: IModuleRoute[] = [
     {path: "/user", router: UserRouter},
-    {path: "/auth", router: AuthRouter}
+    {path: "/auth", router: AuthRouter},
+    {path: "/wallet", router: WalletRouter},
 ];
 
 moduleRoutes.forEach(route => {
