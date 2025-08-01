@@ -20,9 +20,39 @@ router.get(
 )
 
 router.get(
+    "/users",
+    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    UserControllers.getUsers,
+)
+
+router.get(
+    "/agents",
+    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    UserControllers.getAgents,
+)
+
+router.get(
     "/me",
     checkAuth(...Object.values(UserRole)),
     UserControllers.getMe,
+)
+
+router.get(
+    "/:id",
+    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    UserControllers.getSingleUser,
+)
+
+router.patch(
+    "/:id/approve",
+    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    UserControllers.approveUser,
+)
+
+router.patch(
+    "/:id/disapprove",
+    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    UserControllers.disapproveUser,
 )
 
 router.patch(
@@ -31,10 +61,5 @@ router.patch(
     validateRequest(updateUserZodSchema),
     UserControllers.updateUser
 )
-
-// router.delete(
-//     "/:id",
-//     UserControllers.deleteUser
-// )
 
 export const UserRouter = router;

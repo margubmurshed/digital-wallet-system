@@ -13,6 +13,8 @@ interface envVarTypes {
     JWT_REFRESH_EXPIRES: string;
     SUPER_ADMIN_PHONE: string;
     SUPER_ADMIN_PASS: string;
+    TRANSACTION_FEE_PERCENTAGE: number;
+    DEFAULT_AGENT_COMMISSION_RATE: number;
 }
 
 function loadEnvVars () : envVarTypes {
@@ -27,6 +29,8 @@ function loadEnvVars () : envVarTypes {
         "JWT_REFRESH_EXPIRES",
         "SUPER_ADMIN_PHONE",
         "SUPER_ADMIN_PASS",
+        "TRANSACTION_FEE_PERCENTAGE",
+        "DEFAULT_AGENT_COMMISSION_RATE"
     ];
     requiredEnvVars.forEach(key => {
         if(!process.env[key]){
@@ -45,6 +49,8 @@ function loadEnvVars () : envVarTypes {
         JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
         SUPER_ADMIN_PHONE: process.env.SUPER_ADMIN_PHONE as string,
         SUPER_ADMIN_PASS: process.env.SUPER_ADMIN_PASS as string,
+        TRANSACTION_FEE_PERCENTAGE: Number(process.env.TRANSACTION_FEE_PERCENTAGE),
+        DEFAULT_AGENT_COMMISSION_RATE: Number(process.env.DEFAULT_AGENT_COMMISSION_RATE),
     }
 }
 

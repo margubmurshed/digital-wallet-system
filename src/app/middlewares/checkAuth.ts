@@ -31,7 +31,7 @@ const checkAuth = (...authRoles: UserRole[]) => {
             if(!user.isApproved){
                 throw new AppError("User is not approved", httpStatus.BAD_REQUEST)
             }
-
+            
             // Checking whether requested client role matches any of allowed roles
             if (!authRoles.includes(tokenPayload.role)) {
                 throw new AppError("You are not permitted to access this route!", httpStatus.UNAUTHORIZED)

@@ -12,7 +12,7 @@ const userSchema = new Schema<IUserDocument>({
     status: {type:String, enum: Object.values(UserStatus), default: UserStatus.ACTIVE},
 
     // Agent only properties
-    commissionRate: {type:Number, default: 0.01},
+    commissionRate: {type:Number, default: envVariables.DEFAULT_AGENT_COMMISSION_RATE},
     isApproved: {type: Boolean, default: false},
 }, {
     timestamps: true,

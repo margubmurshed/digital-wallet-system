@@ -30,6 +30,34 @@ const getAllUsers = catchAsync(async(req: Request, res: Response) => {
     })
 })
 
+const getUsers = catchAsync(async(req: Request, res: Response) => {
+    const query = req.query as Record<string, string>;
+    const result = await UserService.getUsers(query)
+
+    sendResponse(res, {
+        success: true,
+        message: `USER role users data retrieved Successfully!`,
+        statusCode: httpStatus.OK,
+        data: result.data,
+        meta: result.meta
+    })
+})
+
+
+const getAgents = catchAsync(async(req: Request, res: Response) => {
+    const query = req.query as Record<string, string>;
+    const result = await UserService.getAgents(query)
+
+    sendResponse(res, {
+        success: true,
+        message: `AGENT role users data retrieved Successfully!`,
+        statusCode: httpStatus.OK,
+        data: result.data,
+        meta: result.meta
+    })
+})
+
+
 const updateUser = catchAsync(async(req: Request, res: Response) => {
     const payload = req.body;
     const userId = req.params.id;
@@ -58,9 +86,48 @@ const getMe = catchAsync(async(req: Request, res: Response) => {
     })
 })
 
+const getSingleUser = catchAsync(async(req: Request, res: Response) => {
+    const userId = req.params.id;
+    const result = await UserService.getSingleUser(userId);
+
+    sendResponse(res, {
+        success: true,
+        message: `User info retrieved successfully!`,
+        statusCode: httpStatus.OK,
+        data: result.data,
+    })
+})
+const approveUser = catchAsync(async(req: Request, res: Response) => {
+    const userId = req.params.id;
+    const result = await UserService.approveUser(userId);
+
+    sendResponse(res, {
+        success: true,
+        message: `User is approved successfully!`,
+        statusCode: httpStatus.OK,
+        data: result,
+    })
+})
+const disapproveUser = catchAsync(async(req: Request, res: Response) => {
+    const userId = req.params.id;
+    const result = await UserService.disapproveUser(userId);
+
+    sendResponse(res, {
+        success: true,
+        message: `User is approved successfully!`,
+        statusCode: httpStatus.OK,
+        data: result,
+    })
+})
+
 export const UserControllers = {
     createUser,
     getAllUsers,
+    getUsers,
+    getAgents,
     updateUser,
-    getMe
+    getMe,
+    getSingleUser,
+    approveUser,
+    disapproveUser
 }
