@@ -27,10 +27,6 @@ const checkAuth = (...authRoles: UserRole[]) => {
             if (user.status === UserStatus.BLOCKED) {
                 throw new AppError(`User is blocked!`, httpStatus.BAD_REQUEST);
             }
-
-            if(!user.isApproved){
-                throw new AppError("User is not approved", httpStatus.BAD_REQUEST)
-            }
             
             // Checking whether requested client role matches any of allowed roles
             if (!authRoles.includes(tokenPayload.role)) {
