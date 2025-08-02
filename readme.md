@@ -9,9 +9,9 @@ The **Digital Wallet Backend System** is a secure and modular backend system bui
 
 ## Features
 - ☑️ **JWT Authentication** with secure password hashing using mongoose pre save hook
-- ☑️ **Role-based Authorization** (`user`, `agent`, `agent`)
+- ☑️ **Role-based Authorization** (`user`, `agent`, `admin`)
 - ☑️ **Auto Wallet Creation** during registration (initial balance : 50 Taka)
-- ☑️ **User Features**: Add Money, withdray money, send money, cash out
+- ☑️ **User Features**: Add Money, withdraw money, send money, cash out
 - ☑️ **Agent Features**: Cash-in, view commissions
 - ☑️ **Admin Features**: View, update, approve, block users and agents and their wallets
 - ☑️ **Transaction History** with commission tracking
