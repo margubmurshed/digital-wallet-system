@@ -80,6 +80,43 @@ The **Digital Wallet Backend System** is a secure and modular backend system bui
 
 ---
 
+## Setup Instruction
+
+1. **Clone the repo**
+   ```bash
+       git clone https://github.com/margubmurshed/digital-wallet-system.git
+       cd digital-wallet-system
+   ```
+2. Install Dependencies
+   ```nginx
+       npm install -f
+   ```
+3. Configure Environment Variables
+   Create a .env file in the root directory and add the following:
+   ```ini
+        DB_URL=mongodb+srv://<DB_USERNAME>:<DB_PASSWORD>@cluster0.hrq6pyr.mongodb.net/digitalWalletDB?retryWrites=true&w=majority&appName=Cluster0
+        PORT=5000
+        NODE_ENV=development
+        JWT_ACCESS_SECRET=ACCESS_SECRET
+        JWT_ACCESS_EXPIRES=EXPIRY_TIME
+        JWT_REFRESH_SECRET=REFRESH_SECRET
+        JWT_REFRESH_EXPIRES=EXPIRY_TIME
+        BCRYPT_SALT_ROUND=INT_NUMBER
+        SUPER_ADMIN_PHONE=PHONE_NUMBER
+        SUPER_ADMIN_PASS=PASSWORD
+        TRANSACTION_FEE_PERCENTAGE=NUMBER
+        DEFAULT_AGENT_COMMISSION_RATE=NUMBER```
+4. Run the development server
+   ```bash
+        npm run dev
+   ```
+
+5. Open Postman or Browser and hit:
+    ```bash
+        http://localhost:5000/api/v1
+   ```
+---
+
 ## Developed By
 **Margub Murshed**
 *Full Stack Developer*
