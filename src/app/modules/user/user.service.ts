@@ -117,7 +117,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, tokenPayload:
         }
 
         // user and agent can only update allowed properties
-        const allowedUserAndAgentProperties = ["name", "password"];
+        const allowedUserAndAgentProperties = ["name", "password", "phone"];
         if (tokenPayload.role === UserRole.USER || tokenPayload.role === UserRole.AGENT) {
             if (hasDisallowedProperties(payload, allowedUserAndAgentProperties)) {
                 throw new AppError("You are not allowed to update specific properties!", httpStatus.FORBIDDEN);

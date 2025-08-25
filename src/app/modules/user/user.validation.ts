@@ -53,4 +53,4 @@ export const updateUserZodSchema = createUserZodSchema.partial().extend({
     status: z.nativeEnum(UserStatus).optional(),
     role: z.nativeEnum(UserRole).optional()
 })
-.omit({phone: true, email: true});
+    .omit({ email: true });
