@@ -30,8 +30,7 @@ export const createUserZodSchema = z.object({
         .string({ invalid_type_error: "Email must be string" })
         .email({ message: "Invalid email address format." })
         .min(5, { message: "Email must be at least 5 characters long." })
-        .max(100, { message: "Email cannot exceed 100 characters." })
-        .optional(),
+        .max(100, { message: "Email cannot exceed 100 characters." }),
     password: z
         .string({ invalid_type_error: "Password must be string" })
         .min(8, { message: "Password must be at least 8 characters long." })
@@ -54,4 +53,4 @@ export const updateUserZodSchema = createUserZodSchema.partial().extend({
     status: z.nativeEnum(UserStatus).optional(),
     role: z.nativeEnum(UserRole).optional()
 })
-.omit({phone: true});
+.omit({phone: true, email: true});

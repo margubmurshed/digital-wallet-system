@@ -32,7 +32,7 @@ const addMoney = async (wallet: IWalletDocument, amount: number) => {
             balance: updatedUserWallet.balance
         }
     } catch (error) {
-        if(session.inTransaction()){
+        if (session.inTransaction()) {
             await session.abortTransaction();
         }
         throw error;
@@ -46,7 +46,7 @@ const withdrawMoney = async (wallet: IWalletDocument, amount: number) => {
     session.startTransaction();
 
     try {
-        if(wallet.balance < amount) {
+        if (wallet.balance < amount) {
             throw new AppError("Insufficient Funds!", httpStatus.BAD_REQUEST);
         }
 
@@ -67,7 +67,7 @@ const withdrawMoney = async (wallet: IWalletDocument, amount: number) => {
             balance: updatedUserWallet.balance
         }
     } catch (error) {
-        if(session.inTransaction()){
+        if (session.inTransaction()) {
             await session.abortTransaction();
         }
         throw error;
@@ -81,16 +81,16 @@ const sendMoney = async (senderPhoneNumber: string, senderWallet: IWalletDocumen
     session.startTransaction();
 
     try {
-        if(senderPhoneNumber === receiverPhoneNumber){
+        if (senderPhoneNumber === receiverPhoneNumber) {
             throw new AppError("You can't send money to your own wallet", httpStatus.BAD_REQUEST);
         }
 
-        const {wallet:receiverWallet} = await checkUser(receiverPhoneNumber, UserRole.USER);
-        
-        const fee = amount * (envVariables.TRANSACTION_FEE_PERCENTAGE/100);
+        const { wallet: receiverWallet } = await checkUser(receiverPhoneNumber, UserRole.USER);
+
+        const fee = amount * (envVariables.TRANSACTION_FEE_PERCENTAGE / 100);
         const totalAmountWithFee = amount + fee;
 
-        if(senderWallet.balance < totalAmountWithFee) {
+        if (senderWallet.balance < totalAmountWithFee) {
             throw new AppError("Insufficient Funds!", httpStatus.BAD_REQUEST);
         }
 
@@ -103,7 +103,7 @@ const sendMoney = async (senderPhoneNumber: string, senderWallet: IWalletDocumen
             amount
         }], { session });
 
-        senderWallet.balance = senderWallet.balance - amount;
+        senderWallet.balance = senderWallet.balance - totalAmountWithFee;
         receiverWallet.balance = receiverWallet.balance + amount;
 
         const updatedSenderUserWallet = await senderWallet.save({ session });
@@ -115,7 +115,7 @@ const sendMoney = async (senderPhoneNumber: string, senderWallet: IWalletDocumen
             balance: updatedSenderUserWallet.balance
         }
     } catch (error) {
-        if(session.inTransaction()){
+        if (session.inTransaction()) {
             await session.abortTransaction();
         }
         throw error;
@@ -129,13 +129,13 @@ const cashIn = async (agentPhoneNumber: string, agentWallet: IWalletDocument, am
     session.startTransaction();
 
     try {
-        if(agentPhoneNumber === receiverPhoneNumber){
+        if (agentPhoneNumber === receiverPhoneNumber) {
             throw new AppError("You can't cash into your own wallet", httpStatus.BAD_REQUEST);
         }
 
-        const {wallet:receiverWallet} = await checkUser(receiverPhoneNumber, UserRole.USER);
+        const { wallet: receiverWallet } = await checkUser(receiverPhoneNumber, UserRole.USER);
 
-        if(agentWallet.balance < amount) {
+        if (agentWallet.balance < amount) {
             throw new AppError("Insufficient Funds!", httpStatus.BAD_REQUEST);
         }
 
@@ -159,7 +159,7 @@ const cashIn = async (agentPhoneNumber: string, agentWallet: IWalletDocument, am
             balance: updatedAgentWallet.balance
         }
     } catch (error) {
-        if(session.inTransaction()){
+        if (session.inTransaction()) {
             await session.abortTransaction();
         }
         throw error;
@@ -172,19 +172,19 @@ const cashOut = async (userPhoneNumber: string, userWallet: IWalletDocument, amo
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    try {  
-        if(userPhoneNumber === agentPhoneNumber){
+    try {
+        if (userPhoneNumber === agentPhoneNumber) {
             throw new AppError("Agent number can not be same as user", httpStatus.BAD_REQUEST);
         }
 
-        const {user:agent, wallet:agentWallet} = await checkUser(agentPhoneNumber, UserRole.AGENT);
+        const { user: agent, wallet: agentWallet } = await checkUser(agentPhoneNumber, UserRole.AGENT);
 
 
-        const fee = amount * (envVariables.TRANSACTION_FEE_PERCENTAGE/100);
+        const fee = amount * (envVariables.TRANSACTION_FEE_PERCENTAGE / 100);
         const commission = agent.commissionRate * fee;
         const totalAmountWithFee = amount + fee;
 
-        if(userWallet.balance < totalAmountWithFee) {
+        if (userWallet.balance < totalAmountWithFee) {
             throw new AppError("Insufficient Funds!", httpStatus.BAD_REQUEST);
         }
 
@@ -210,7 +210,7 @@ const cashOut = async (userPhoneNumber: string, userWallet: IWalletDocument, amo
             balance: updatedUserWallet.balance
         }
     } catch (error) {
-        if(session.inTransaction()){
+        if (session.inTransaction()) {
             await session.abortTransaction();
         }
         throw error;
@@ -219,57 +219,57 @@ const cashOut = async (userPhoneNumber: string, userWallet: IWalletDocument, amo
     }
 }
 
-const getMe = async(userId:string) => {
-    const userWallet = await Wallet.findOne({user: userId}).populate("user", "name phone");
+const getMe = async (userId: string) => {
+    const userWallet = await Wallet.findOne({ user: userId }).populate("user", "name phone");
 
-    if(!userWallet){
+    if (!userWallet) {
         throw new AppError("User wallet doesn't exist", httpStatus.BAD_REQUEST);
     }
 
-    return {data:userWallet}
+    return userWallet
 }
 
-const getSingleWallet = async(userId: string) => {
-    const userWallet = await Wallet.findOne({user: userId});
+const getSingleWallet = async (userId: string) => {
+    const userWallet = await Wallet.findOne({ user: userId });
 
-    if(!userWallet){
+    if (!userWallet) {
         throw new AppError("User wallet doesn't exist", httpStatus.BAD_REQUEST);
     }
 
-    return {data:userWallet}
+    return { data: userWallet }
 }
 
-const blockWallet = async(userId: string) => {
-    const wallet = await Wallet.findOne({user:userId});
-    
-    if(wallet?.status === WalletStatus.BLOCKED) throw new AppError("User wallet is already blocked!", httpStatus.BAD_REQUEST);
+const blockWallet = async (userId: string) => {
+    const wallet = await Wallet.findOne({ user: userId });
+
+    if (wallet?.status === WalletStatus.BLOCKED) throw new AppError("User wallet is already blocked!", httpStatus.BAD_REQUEST);
 
     wallet!.status = WalletStatus.BLOCKED;
     await wallet!.save();
-    
+
     return null;
 }
 
-const unblockWallet = async(userId: string) => {
-    const wallet = await Wallet.findOne({user:userId});
-    
-    if(wallet?.status === WalletStatus.ACTIVE) throw new AppError("User wallet is already active!", httpStatus.BAD_REQUEST);
+const unblockWallet = async (userId: string) => {
+    const wallet = await Wallet.findOne({ user: userId });
+
+    if (wallet?.status === WalletStatus.ACTIVE) throw new AppError("User wallet is already active!", httpStatus.BAD_REQUEST);
 
     wallet!.status = WalletStatus.ACTIVE;
     await wallet!.save();
-    
+
     return null;
 }
 
-const myCommission = async(userId: string) => {
+const myCommission = async (userId: string) => {
     const myCashOutTransactions = await Transaction.find({
         type: TransactionTypes.CASH_OUT,
         to: userId
     }).lean()
 
-    const totalCommissionEarned = myCashOutTransactions.reduce((prev, current) => prev + current.commission,0);
+    const totalCommissionEarned = myCashOutTransactions.reduce((prev, current) => prev + current.commission, 0);
 
-    return{
+    return {
         totalCommissionEarned,
         totalCashOuts: myCashOutTransactions.length,
         commissionTransactions: myCashOutTransactions

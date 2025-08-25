@@ -10,7 +10,7 @@ import { User } from "../modules/user/user.model";
 const checkAuth = (...authRoles: UserRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const accessToken = req.headers.authorization;
+            const accessToken = req.headers.authorization || req.cookies.accessToken;
 
             if (!accessToken) {
                 throw new AppError("No access token received!", httpStatus.UNAUTHORIZED);
@@ -27,7 +27,7 @@ const checkAuth = (...authRoles: UserRole[]) => {
             if (user.status === UserStatus.BLOCKED) {
                 throw new AppError(`User is blocked!`, httpStatus.BAD_REQUEST);
             }
-            
+
             // Checking whether requested client role matches any of allowed roles
             if (!authRoles.includes(tokenPayload.role)) {
                 throw new AppError("You are not permitted to access this route!", httpStatus.UNAUTHORIZED)

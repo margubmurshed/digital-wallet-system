@@ -21,7 +21,7 @@ router.get(
 
 router.get(
     "/users",
-    checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    checkAuth(...Object.values(UserRole)),
     UserControllers.getUsers,
 )
 

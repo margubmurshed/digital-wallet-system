@@ -6,14 +6,14 @@ import { envVariables } from "../../config/env";
 const userSchema = new Schema<IUserDocument>({
     name: {type:String, required: true},
     phone: {type: String, required:true, unique: true},
-    email: {type: String, sparse: true},
+    email: {type: String, sparse: true, required: true},
     password: {type: String, required: true},
     role: {type:String, enum: Object.values(UserRole), required: true},
     status: {type:String, enum: Object.values(UserStatus), default: UserStatus.ACTIVE},
 
     // Agent only properties
     commissionRate: {type:Number, default: envVariables.DEFAULT_AGENT_COMMISSION_RATE},
-    isApproved: {type: Boolean, default: false},
+    isApproved: {type: Boolean, default: true},
 }, {
     timestamps: true,
     toJSON: {

@@ -10,7 +10,7 @@ export const zodObjectId = z
 
 export const zodBDPhoneNumber = z
         .string({ invalid_type_error: "Phone Number must be string" })
-        .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
+        .regex(/^(?:\+?8801\d{9}|01\d{9})$/, {
             message: "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
         })
         .transform((val) => {

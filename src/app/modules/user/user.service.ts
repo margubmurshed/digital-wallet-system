@@ -10,6 +10,7 @@ import { JwtPayload } from "jsonwebtoken";
 import hasDisallowedProperties from "../../utils/hasDisallowedProperties";
 import syncWalletStatusWithUser from "../../utils/syncWalletStatusWithUser";
 import { WalletStatus } from "../wallet/wallet.interface";
+import { phoneSchema } from "../auth/auth.validation";
 
 const createUser = async (payload: IUser) => {
     const userExists = await User.findOne({ phone: payload.phone });
@@ -41,6 +42,9 @@ const createUser = async (payload: IUser) => {
 }
 
 const getAllUsers = async (query: Record<string, string>) => {
+    if (query?.phone) {
+        query.phone = await phoneSchema.parseAsync(query.phone)
+    }
     const queryBuilder = new QueryBuilder(User.find(), query);
     queryBuilder
         .filter()
@@ -57,7 +61,11 @@ const getAllUsers = async (query: Record<string, string>) => {
 }
 
 const getUsers = async (query: Record<string, string>) => {
-    const queryBuilder = new QueryBuilder(User.find({role: UserRole.USER}), query);
+    if (query?.phone) {
+        query.phone = await phoneSchema.parseAsync(query.phone)
+    }
+    query.role = UserRole.USER
+    const queryBuilder = new QueryBuilder(User.find(), query);
     queryBuilder
         .filter()
         .fields()
@@ -69,11 +77,16 @@ const getUsers = async (query: Record<string, string>) => {
         queryBuilder.getMetaData()
     ])
 
-    return { data, meta }
+    return {
+        data, meta
+    }
 }
 
 const getAgents = async (query: Record<string, string>) => {
-    const queryBuilder = new QueryBuilder(User.find({role: UserRole.AGENT}), query);
+    if (query?.phone) {
+        query.phone = await phoneSchema.parseAsync(query.phone)
+    }
+    const queryBuilder = new QueryBuilder(User.find({ role: UserRole.AGENT }), query);
     queryBuilder
         .filter()
         .fields()
@@ -187,7 +200,7 @@ const disapproveUser = async (userId: string) => {
         const user = await User.findById(userId).session(session);
         if (!user?.isApproved) throw new AppError("User is already not approved!", httpStatus.BAD_REQUEST);
         user!.isApproved = false;
-        await user!.save({session});
+        await user!.save({ session });
         await Wallet.findOneAndUpdate({ user: userId }, { status: WalletStatus.BLOCKED }).session(session);
         await session.commitTransaction();
         return null;

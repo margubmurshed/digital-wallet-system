@@ -13,7 +13,7 @@ const passwordSchema = z
         message: "Password must contain at least 1 number.",
     })
 
-const phoneSchema = z
+export const phoneSchema = z
     .string({ invalid_type_error: "Phone Number must be string" })
     .regex(/^(?:\+8801\d{9}|8801\d{9}|01\d{9})$/, {
         message: "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",

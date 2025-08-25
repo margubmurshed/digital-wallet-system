@@ -6,6 +6,7 @@ import httpStatus from "http-status-codes";
 import { createUserTokens } from "../../utils/userTokens";
 import { setAuthCookie } from "../../utils/setCookie";
 import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync";
 
 const credentialLogin = (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", (error: any, user: any, info: any) => {
@@ -28,6 +29,27 @@ const credentialLogin = (req: Request, res: Response, next: NextFunction) => {
     })(req, res, next)
 }
 
+const logOut = catchAsync(async (req: Request, res: Response) => {
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User Logged Out Successfully!",
+        data: null
+    })
+})
+
 export const AuthController = {
-    credentialLogin
+    credentialLogin,
+    logOut
 }

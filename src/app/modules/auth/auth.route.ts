@@ -11,4 +11,9 @@ router.post(
     AuthController.credentialLogin
 )
 
+router.post(
+    "/logout",
+    AuthController.logOut
+)
+
 export const AuthRouter = router;
