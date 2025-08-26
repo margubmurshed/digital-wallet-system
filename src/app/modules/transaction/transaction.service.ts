@@ -46,7 +46,7 @@ const getAllTransactions = async (query: Record<string, string>) => {
         .paginate();
 
     const [data, meta] = await Promise.all([
-        queryBuilder.build(),
+        queryBuilder.build().populate("from", "name phone").populate("to", "name phone"),
         queryBuilder.getMetaData()
     ])
 

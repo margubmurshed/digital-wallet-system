@@ -110,10 +110,17 @@ const getStats = async () => {
             usersPerDay: fillMissingDays(usersRaw),
             agentsPerDay: fillMissingDays(agentsRaw),
             transactionsPerDay: fillMissingDays(transactionsRaw),
+            thisWeekCount: {
+                users: thisWeekUsers,
+                agents: thisWeekAgents,
+                transactions: thisWeekTransactions
+            },
             growth: {
                 users: calcGrowth(thisWeekUsers.count, lastWeekUsers.count),
                 agents: calcGrowth(thisWeekAgents.count, lastWeekAgents.count),
-                transactions: calcGrowth(thisWeekTransactions.count, lastWeekTransactions.count)
+                transactions: calcGrowth(thisWeekTransactions.count, lastWeekTransactions.count),
+                transactionAmount: calcGrowth(thisWeekTransactions.totalAmount, lastWeekTransactions.totalAmount),
+                totalUsersAndAgents: calcGrowth(thisWeekUsers.count + thisWeekAgents.count, lastWeekUsers.count+lastWeekAgents.count)
             }
         }
 }

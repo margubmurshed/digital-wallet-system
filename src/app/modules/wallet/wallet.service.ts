@@ -236,7 +236,7 @@ const getSingleWallet = async (userId: string) => {
         throw new AppError("User wallet doesn't exist", httpStatus.BAD_REQUEST);
     }
 
-    return { data: userWallet }
+    return userWallet
 }
 
 const blockWallet = async (userId: string) => {
