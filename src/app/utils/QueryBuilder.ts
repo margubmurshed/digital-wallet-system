@@ -34,9 +34,21 @@ export class QueryBuilder<T> {
 
     sort() {
         const sortBy = this.query.sortBy || '';
+        const sort: Record<string, number> = {};
         if (sortBy) {
-            this.modelQuery = this.modelQuery.sort(sortBy);
+            const sortArray = Array.isArray(sortBy)
+                ? sortBy
+                : [sortBy];
+
+            sortArray.filter(Boolean).forEach((field) => {
+                if (field.startsWith("-")) {
+                    sort[field.substring(1)] = -1; // descending
+                } else {
+                    sort[field.replace(/^\+/, "")] = 1; // ascending (default)
+                }
+            });
         }
+        this.modelQuery = this.modelQuery.sort(sortBy);
         return this;
     }
 

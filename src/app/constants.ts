@@ -1,1 +1,1 @@
-export const filterExcludedFields = ['page', 'limit', 'sortBy', 'searchTerm', "fields"];
+export const filterExcludedFields = ['page', 'limit', 'sortBy', 'searchTerm', "fields", "minAmount", "maxAmount"];

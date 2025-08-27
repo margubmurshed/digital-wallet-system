@@ -37,7 +37,19 @@ const getMyTransactions = async (userId: string, query: Record<string, string>) 
     }
 }
 
-const getAllTransactions = async (query: Record<string, string>) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getAllTransactions = async (query: Record<any, any>) => {
+    const {minAmount, maxAmount} = query;
+    if(minAmount || maxAmount){
+        query.amount = {};
+    }
+    if(minAmount){
+        query.amount = {...query.amount, $gte: Number(minAmount)}
+    }
+    if(maxAmount){
+        query.amount = {...query.amount, $lte: Number(maxAmount)}
+    }
+    
     const queryBuilder = new QueryBuilder(Transaction.find(), query);
     queryBuilder
         .filter()
