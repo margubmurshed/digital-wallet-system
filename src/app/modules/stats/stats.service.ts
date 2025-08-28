@@ -76,12 +76,11 @@ const getStats = async () => {
     const sumCounts = (raw: any[], startOffset: number, endOffset: number) => {
         const start = toZonedTime(startOfDay(subDays(today, startOffset)), timeZone);
         const end = toZonedTime(startOfDay(subDays(today, endOffset)), timeZone);
+        const startStr = format(start, "yyyy-MM-dd");
+        const endStr = format(end, "yyyy-MM-dd");
 
-        return raw.filter(r => {
-            const date = new Date(r._id);
-            date.setDate(date.getDate() - 1);
-            return date <= end && date >= start
-        }).reduce((prev, current) => {
+        return raw.filter(r => r._id <= endStr && r._id >= startStr)
+        .reduce((prev, current) => {
             prev.count += current.count
             prev.totalAmount += current.totalAmount
             return prev;
