@@ -3,7 +3,8 @@
 ## Project Overview
 The **Digital Wallet Backend System** is a secure and modular backend system built with **Express.js**, **Mongoose** and **TypeScript**, inspired by digital wallet platforms like **BKash** or **Nagad**. It supports **role-based access** for **users**, **agents**, and **admins**, allowing transactions such as money transfer, cash-in and cash-out.
 
-> **Live Link**: [https://digital-wallet-system-bay.vercel.app](https://digital-wallet-system-bay.vercel.app/)
+> **Live Link**: [https://digital-wallet-server-alpha.vercel.app](https://digital-wallet-server-alpha.vercel.app)
+> **Client Repository**: [https://github.com/margubmurshed/digital-wallet-system-client](https://github.com/margubmurshed/digital-wallet-system-client)
 
 ---
 
